@@ -15,6 +15,17 @@ then
     export ANT_HOME ANT_OPTS PATH
 
 	cd tomcat8/bin
+	cd $OPENSHIFT_DATA_DIR
+
+        export JAVA_HOME=/etc/alternatives/java_sdk_1.8.0
+        export M2=$OPENSHIFT_DATA_DIR/apache-maven-3.3.9/bin
+        export MAVEN_OPTS="-Xms384m -Xmx412m"
+        export PATH=$JAVA_HOME/bin:$PATH
+        cd $OPENSHIFT_REPO_DIR
+        $M2/mvn --version
+        $M2/mvn -s settings.xml clean package
+        cd $OPENSHIFT_DATA_DIR/tomcat8/bin
+
 	./startup.sh
     exit 0
 else
@@ -25,6 +36,15 @@ else
     tar -zxf jdk-8u72-linux-x64.tar.gz
     export PATH=$OPENSHIFT_DATA_DIR/jdk1.8.0_72/bin:$PATH
     export JAVA_HOME=$OPENSHIFT_DATA_DIR/jdk1.8.0_72/
+
+    #maven installation
+    wget -P $OPENSHIFT_DATA_DIR http://mirror.cc.columbia.edu/pub/software/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
+    tar xvf $OPENSHIFT_DATA_DIR/apache-maven*.tar.gz --directory $OPENSHIFT_DATA_DIR
+    rm -f $OPENSHIFT_DATA_DIR/apache-maven*.tar.gz
+
+    mkdir -p $OPENSHIFT_DATA_DIR/m2/repository
+    mkdir -p $OPENSHIFT_DATA_DIR/logs
+
 
     # Apache Ant Installation and Configuration
     cd $OPENSHIFT_DATA_DIR
@@ -57,6 +77,15 @@ else
 	sed -i "s#<Connector\s*port=\(\"8080\"\)\(.*\)#<Connector address=\"$ip\" port=\"8080\" \2#g;" server.xml
 	sed -i "s#<Connector\s*port=\(\"8009\"\)\(.*\)#<Connector address=\"$ip\" port=\"18009\" \2#g" server.xml
 	sed -i "s#redirectPort=\"8443\"#redirectPort=\"18443\"#g" server.xml
-	cd ../bin
+	cd $OPENSHIFT_DATA_DIR
+
+	export JAVA_HOME=/etc/alternatives/java_sdk_1.8.0
+        export M2=$OPENSHIFT_DATA_DIR/apache-maven-3.3.9/bin
+        export MAVEN_OPTS="-Xms384m -Xmx412m"
+        export PATH=$JAVA_HOME/bin:$PATH
+        cd $OPENSHIFT_REPO_DIR
+        $M2/mvn --version
+        $M2/mvn -s settings.xml clean package
+	cd $OPENSHIFT_DATA_DIR/tomcat8/bin
 	./startup.sh
 fi
