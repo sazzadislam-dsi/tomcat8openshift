@@ -164,7 +164,7 @@
                         <version>2.6</version>
                         <configuration>
                             <failOnMissingWebXml>false</failOnMissingWebXml>
-                            <outputDirectory>${OPENSHIFT_DATA_DIR}/tomcat8/webapps/deployments</outputDirectory>
+                            <outputDirectory>${OPENSHIFT_DATA_DIR}/tomcat8/webapps</outputDirectory>
                             <warName>ROOT</warName>
                         </configuration>
                     </plugin>
