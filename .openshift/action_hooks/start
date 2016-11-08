@@ -4,38 +4,32 @@ cd $OPENSHIFT_DATA_DIR
 
 if [ -d $OPENSHIFT_DATA_DIR/tomcat8 ]
 then
-    # Java 1.8 set env
-    export PATH=$OPENSHIFT_DATA_DIR/jdk1.8.0_72/bin:$PATH
-    export JAVA_HOME=$OPENSHIFT_DATA_DIR/jdk1.8.0_72/
+	####################
+	# Set environment ###
+	####################
+	export JAVA_HOME=/etc/alternatives/java_sdk_1.8.0
+    export M2=$OPENSHIFT_DATA_DIR/apache-maven-3.3.9/bin
+    export MAVEN_OPTS="-Xms384m -Xmx412m"
+    export PATH=$JAVA_HOME/bin:$PATH
+	
+	#####################
+	# Create WAR file  ##
+	#####################
+    cd $OPENSHIFT_REPO_DIR
+    $M2/mvn --version
+    $M2/mvn -s settings.xml clean package
 
-    # Ant 1.9 set env
-    ANT_HOME=$OPENSHIFT_DATA_DIR/apache-ant-1.9.6
-    ANT_OPTS="-Xms256M -Xmx512M"
-    PATH=$PATH:$HOME/bin:$ANT_HOME/bin
-    export ANT_HOME ANT_OPTS PATH
-
-	cd tomcat8/bin
-	cd $OPENSHIFT_DATA_DIR
-
-        export JAVA_HOME=/etc/alternatives/java_sdk_1.8.0
-        export M2=$OPENSHIFT_DATA_DIR/apache-maven-3.3.9/bin
-        export MAVEN_OPTS="-Xms384m -Xmx412m"
-        export PATH=$JAVA_HOME/bin:$PATH
-        cd $OPENSHIFT_REPO_DIR
-        $M2/mvn --version
-        $M2/mvn -s settings.xml clean package
-        cd $OPENSHIFT_DATA_DIR/tomcat8/bin
-
+	####################
+	# Start Tomcat 8  ##
+	####################
+    cd $OPENSHIFT_DATA_DIR/tomcat8/bin
 	./startup.sh
     exit 0
 else
-    # Java 1.8 Installation and Configuration
     cd $OPENSHIFT_DATA_DIR
+	export JAVA_HOME=/etc/alternatives/java_sdk_1.8.0
+    export PATH=$JAVA_HOME/bin:$PATH
 
-    wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u72-b15/jdk-8u72-linux-x64.tar.gz
-    tar -zxf jdk-8u72-linux-x64.tar.gz
-    export PATH=$OPENSHIFT_DATA_DIR/jdk1.8.0_72/bin:$PATH
-    export JAVA_HOME=$OPENSHIFT_DATA_DIR/jdk1.8.0_72/
 
     #maven installation
     wget -P $OPENSHIFT_DATA_DIR http://mirror.cc.columbia.edu/pub/software/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
@@ -43,7 +37,6 @@ else
     rm -f $OPENSHIFT_DATA_DIR/apache-maven*.tar.gz
 
     mkdir -p $OPENSHIFT_DATA_DIR/m2/repository
-    mkdir -p $OPENSHIFT_DATA_DIR/logs
 
 
     # Apache Ant Installation and Configuration
@@ -61,7 +54,7 @@ else
 	git clone https://github.com/apache/tomcat80.git
 	cd tomcat80/
 	mv build.properties.default build.properties
-  OLD_PATH={user.home}/tomcat-build-libs
+    OLD_PATH={user.home}/tomcat-build-libs
 	NEW_PATH={user.home}/app-root/data/dependencies
 	sed -i "s|$OLD_PATH|$NEW_PATH|g" build.properties
 	sed -i "s#depends=\"package,build-docs,build-tomcat-jdbc\"#depends=\"package,build-tomcat-jdbc\"#g" build.xml
@@ -80,12 +73,12 @@ else
 	cd $OPENSHIFT_DATA_DIR
 
 	export JAVA_HOME=/etc/alternatives/java_sdk_1.8.0
-        export M2=$OPENSHIFT_DATA_DIR/apache-maven-3.3.9/bin
-        export MAVEN_OPTS="-Xms384m -Xmx412m"
-        export PATH=$JAVA_HOME/bin:$PATH
-        cd $OPENSHIFT_REPO_DIR
-        $M2/mvn --version
-        $M2/mvn -s settings.xml clean package
+    export M2=$OPENSHIFT_DATA_DIR/apache-maven-3.3.9/bin
+    export MAVEN_OPTS="-Xms384m -Xmx412m"
+    export PATH=$JAVA_HOME/bin:$PATH
+    cd $OPENSHIFT_REPO_DIR
+    $M2/mvn --version
+    $M2/mvn -s settings.xml clean package
 	cd $OPENSHIFT_DATA_DIR/tomcat8/bin
 	./startup.sh
 fi
