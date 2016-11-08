@@ -6,5 +6,5 @@ package com.lynas;
 public class AppConstant {
     public static final String tokenHeader = "X-Auth-Token";
     public static final String DEBIT="DEBIT",CREDIT="CREDIT",ADD="ADD",SELL="SELL";
-    public static final String ENVIRONMENT= "WINMAC";
+    public static final String ENVIRONMENT= "LINUX";
 }
