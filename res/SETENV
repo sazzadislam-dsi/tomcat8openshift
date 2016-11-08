@@ -1,0 +1,9 @@
+export INVENTORY_MANAGEMENT=WINMAC
+
+set it in
+.zshrc
+.bashrc
+/etc/profile
+/etc/bash.bashrc
+
+reboot pc to take effect

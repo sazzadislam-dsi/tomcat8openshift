@@ -1,0 +1,6 @@
+# Run Jar file As service
+# Make sure to open cmd as Administrator
+nssm install <servicename> "C:\Program Files\Java\jre7\java.exe" "-jar <path-to-jar-file>"
+
+# Run tomcat as service windows
+Download the service version of tomcat install and have fun
