@@ -165,7 +165,7 @@
                         <configuration>
                             <failOnMissingWebXml>false</failOnMissingWebXml>
                             <outputDirectory>$OPENSHIFT_DATA_DIR/tomcat8/webapps/deployments</outputDirectory>
-                            <warName>api</warName>
+                            <warName>ROOT</warName>
                         </configuration>
                     </plugin>
                     <plugin>
