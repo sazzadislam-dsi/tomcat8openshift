@@ -57,7 +57,7 @@ public class DatabaseConfig {
         System.out.println("Using Password : "+dbPasswordLinux);
         System.out.println("=============================");
         System.out.println("=============================");
-        return getDataSource("5821cd1489f5cfa7850000ad@invmrest-sazzad.rhcloud.com", "adminJi8hmw5", "8UiDDTAECJyn", 3306,"invmrest");
+        return getDataSource("127.3.38.2", "adminJi8hmw5", "8UiDDTAECJyn", 3306,"invmrest");
     }
 
     private HikariDataSource getDataSource(String serverName, String user, String password, int port, String dbName) {
